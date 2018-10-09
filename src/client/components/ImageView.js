@@ -143,20 +143,24 @@ class ImageView extends React.Component {
             : null }
         </div>
 
-        <div className="details">
-        <span><b>Fotograf</b>: {currentImage.author}</span>
-        <span><b>Bild-Id</b>: {currentImage.id}</span>
-        <a href={ currentImage.fullSize } onClick={ clickFullSize(currentImage.fullSize) } target="_blank">Öppna bilden i full storlek</a>
-        </div>
+        <aside id="info">
+
+            <div className="details">
+                <span><b>Fotograf</b>: {currentImage.author}</span>
+                <span><b>Bild-Id</b>: {currentImage.id}</span>
+                <a href={ currentImage.fullSize } onClick={ clickFullSize(currentImage.fullSize) } target="_blank">Öppna bilden i full storlek</a>
+            </div>
 
 
-        <div className="tags"><b>Taggar</b>: {currentImage.tags.join(', ')}</div>
-        <form onSubmit={ this.onAddTag.bind(this) } className="new-tag-form">
-        <input type="text" name="newTag" placeholder="ny tagg" value={ this.state.newTag } onChange={ this.onChangeTag.bind(this) } />
-        <button type="submit" className="button">Lägg till</button>
-        </form>
+            <div className="tags"><span><b>Taggar</b>: {currentImage.tags.join(', ')}</span>
+                <form onSubmit={ this.onAddTag.bind(this) } className="new-tag-form">
+                    <input type="text" name="newTag" placeholder="ny tagg" value={ this.state.newTag } onChange={ this.onChangeTag.bind(this) } />
+                    <button type="submit" className="button">Lägg till</button>
+                </form>
+            </div>
 
-        
+        </aside>
+
       </div>
     );
   }

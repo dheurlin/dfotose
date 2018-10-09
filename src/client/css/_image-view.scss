@@ -42,19 +42,20 @@
     }
   }
 
-  .details {
+  .details, .tags{
     display: flex;
     flex-direction: column;
 
     min-width: 250px;
     max-height: 200px;
-    max-width: 800px;
+    max-width: 500px;
 
     background: #eee;
     padding: 10px;
     border-radius: 10px;
 
     margin-left: 20px;
+    margin-bottom: 20px;
 
     .new-tag-form {
       padding-top: 15px;
