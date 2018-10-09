@@ -50,11 +50,9 @@ const About = () => {
   return (
     <div className="wrapper">
       <div className="site-content about-us">
-        <h2>Om oss</h2>
-        <p>DFoto är Datateknologsektionens fotoförening.
-          Vår ambition är att genom foto och film föreviga alla arrangemang Datateknologen går på.
-          Allt ifrån iDrotts legendariska aktiviteter, till D6s storslagna fester och Deltas episka pubar.</p>
-        <p> Du kan komma i kontakt med oss genom att maila <a href="mailto:dfoto@dtek.se">dfoto@dtek.se</a>!</p>
+        <h2>Om sidan</h2>
+        <p>Frukostklubben är Chalmers bästa phaddergrupp. Därför är det självklart att vi skall ha en sida där vi delar foton från alla våra storslagna arr och sittningar!</p>
+        <p>Sidan bygger på <a href="https://dfoto.se">dfoto.se</a> -- ursprungligen skapad av dFoto -- och forkades av <a href="https://github.com/dheurlin">BS</a> som gjorde lite småändringar. Källkoden finns att hitta på <a href="https://github.com/dheurlin/frukostfoto">GitHub</a> för den som är intresserad.</p>
         <h3>Vi ses genom kameralinsen!</h3>
       </div>
     </div>
