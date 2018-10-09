@@ -7,8 +7,7 @@ services:
     volumes:
       - ./storage:/dfotose/storage
       - ./uploaded-images:/dfotose/uploaded-images
-    environment:
-      - NODE_ENV=production
+      - ./src:/dfotose/src
     links:
       - mongo
       - redis

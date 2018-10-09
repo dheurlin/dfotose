@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+    dfotose:
+        environment:
+          - NODE_ENV=production
+        command: ["pm2-runtime", "start", "-i", "10", "dist/server.js"]

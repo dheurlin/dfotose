@@ -18,5 +18,3 @@ RUN gulp client:build
 RUN sh setup-kerberos.sh
 
 EXPOSE 4000
-
-CMD ["pm2-runtime", "start", "-i", "10", "dist/server.js"]
