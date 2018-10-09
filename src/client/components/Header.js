@@ -11,7 +11,7 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="header-content">
-          <Link to="/"><img src="/assets/images/logo.png"/></Link>
+          <Link to="/"><img src="/assets/images/logo-frukost.png"/></Link>
           <ul>
             <li>
               <Link to="/"> Bilder </Link>
@@ -25,6 +25,11 @@ class Header extends React.Component {
               </li>
               : null }
           </ul>
+
+          <div className="info">
+            <TagSearchBar />
+          </div>
+
         </div>
       </div>
     );
