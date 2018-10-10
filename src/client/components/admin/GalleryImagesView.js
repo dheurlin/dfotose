@@ -2,6 +2,7 @@ import React from 'react';
 import {observer} from 'mobx-react';
 
 import UploadImagesForm from './UploadImagesForm';
+import UserStore from '../../UserStore'
 
 const GalleryImagesView = observer(({imageList}) => {
   const onToggleImage = (image) => {
@@ -20,10 +21,12 @@ const GalleryImagesView = observer(({imageList}) => {
 
   const images = _.map(imageList.images.toJS(), image => {
     const className = image.isMarked ? 'marked' : '';
+    // const userPromise = UserStore.fetchAllUsers();
 
     return (
       <tr key={image.filename} className={className} onClick={onToggleImage(image).bind(this)}>
         <td> <input type="checkbox" checked={image.isMarked} onClick={onToggleImage(image).bind(this)}/></td>
+        <td> {image.author} </td>
         <td> {image.filename} </td>
         <td> <img key={ image.filename } src={ image.thumbnail } /> </td>
       </tr>
@@ -42,6 +45,7 @@ const GalleryImagesView = observer(({imageList}) => {
         <thead>
           <tr>
             <th>#</th>
+            <th>fotograf</th>
             <th>filnamn</th>
             <th>bild</th>
           </tr>
