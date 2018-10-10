@@ -60,7 +60,7 @@ class EligibleMembers extends React.Component {
         <input type="text" onChange={this.onCidChange.bind(this)} value={cid}/>
         <select value={role} onChange={this.onRoleChange.bind(this)}>
           <option value="Admin">Admin</option>
-          <option value="DFoto">DFoto</option>
+          <option value="FrukostFoto">FrukostFoto</option>
           <option value="Aspirant">Aspjävel</option>
           <option value="None">-</option>
         </select>
