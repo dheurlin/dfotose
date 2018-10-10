@@ -9,7 +9,7 @@ export class Image {
   constructor(data) {
     this.data = data;
   }
-  
+
   @computed get id() {
     return this.data._id;
   }
@@ -29,7 +29,7 @@ export class Image {
   @computed get thumbnail() {
     return `/v1/image/${this.data._id}/thumbnail`;
   }
-  
+
   @computed get fullSize() {
     return `/v1/image/${this.data._id}/fullSize`;
   }
@@ -37,7 +37,7 @@ export class Image {
   @computed get preview() {
     return `/v1/image/${this.data._id}/preview`;
   }
-  
+
   @computed get tags() {
     return this.data.tags.toJS();
   }
@@ -53,15 +53,15 @@ export class Image {
   @action unmark() {
     this.marked = false;
   }
-  
+
   @action addTag(tagName) {
     const imageId = this.data._id;
-    
+
     const imageTag = {
       imageId: imageId,
       tagName: tagName
     };
-    
+
     return axios.post(`/v1/image/${imageId}/tags`, imageTag)
       .then((() => {
         this.data.tags.push(tagName);
@@ -72,7 +72,7 @@ export class Image {
 export class ImageGalleryList {
   @observable images = [];
   @observable galleryId = null;
-  
+
   constructor(galleryId, images) {
     this.galleryId = galleryId;
     this.images = images;
@@ -89,13 +89,13 @@ export class ImageGalleryList {
 
   @action addImages(formData, progressCallback) {
     const config = {
-      progress: (event => {
+      onUploadProgress: (event => {
         const decimalPercentage = event.loaded / event.total;
         const percent = Math.round(decimalPercentage * 10000) / 100;
         progressCallback(percent);
       })
     };
-    
+
     return axios.post(`/v1/image/${this.galleryId}`, formData, config)
       .then((() => {
         this.fetchImages();
@@ -123,7 +123,7 @@ export class ImageGalleryList {
 export class ImagesForTagList {
   @observable images = [];
   @observable tag = null;
-  
+
   constructor(tag) {
     this.tag = tag;
     this.fetchImages();
