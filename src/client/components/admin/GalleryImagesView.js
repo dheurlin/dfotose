@@ -29,7 +29,7 @@ const GalleryImagesView = observer(({imageList}) => {
       </tr>
     );
   });
-  
+
   return (
     <div>
       <UploadImagesForm galleryImageList={ imageList } />

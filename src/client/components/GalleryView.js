@@ -46,22 +46,22 @@ class GalleryView extends React.Component {
     UiState.updateLastGalleryIdViewed(image.galleryId);
     this.props.history.push(imageViewLink);
   }
-  
+
   render() {
     const {gallery, images} = this.props;
-    
+
     if (gallery == undefined) {
       return (<p>Galleriet finns inte</p>);
     }
-    
+
     const showSpinner = this.state.showSpinner;
     const date = moment(gallery.shootDate).format("YYYY-MM-DD");
-    
+
     return (
       <div className="gallery-view">
         <div className="title">
           <h2>{ gallery.name } - { date }</h2>
-          <p>{ images.length } bilder.<br/> 
+          <p>{ images.length } bilder.<br/>
              { gallery.description }</p>
         </div>
         <LoadingSpinner visible={ showSpinner } />
