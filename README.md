@@ -34,8 +34,7 @@ Besök sidan på http://localhost:4000/ . När du ändrar i koden laddar den om 
 
 
 ### Docker
-Du kan lätt få upp sidan genom att använda docker. Notera att sidan sätter sig i productionsläge direkt när du 
-kör docker.
+Du kan lätt få upp sidan genom att använda docker.
 
 Först behöver du klona repot, och skapa en config-fil, se till att ändra session-secret till något gött
 och bra långt!
@@ -55,7 +54,19 @@ Efter detta är det lätt att slänga igång sidan:
 ```bash
 $> docker-compose build
 ...
-$> docker-compose up -d
+```
+
+För att starta sidan i en produktionsmiljö, kör:
+
+```bash
+$> make up-prod
+...
+```
+
+För att starta den i en utvecklingsmiljö, kör:
+
+```bash
+$> make up-dev
 ...
 ```
 

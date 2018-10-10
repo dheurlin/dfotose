@@ -99,7 +99,7 @@ class Member extends React.Component {
         <td>
           <select value={member.role} onChange={this.onRoleChange.bind(this)}>
             <option value="Admin">Admin</option>
-            <option value="DFoto">DFoto</option>
+            <option value="FrukostFoto">FrukostFoto</option>
             <option value="Aspirant">Aspjävel</option>
             <option value="None">-</option>
           </select>
