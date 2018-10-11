@@ -65,12 +65,12 @@ const AdminHome = () => {
 
 const NotFound = () => {
   const imagesWithText = [
-    {path: '/assets/images/404-hasse.jpg', text: 'Like lite brösthår som Hasse?'},
-    {path: '/assets/images/404-isak.jpg', text: 'Lika full som Isak?'},
-    {path: '/assets/images/404-miranda.jpg', text: 'Nergången är det nya svarta, som Miranda..'},
-    {path: '/assets/images/404-tove.jpg', text: 'Tove approves, mer fylla'},
-    {path: '/assets/images/404-martin.jpg', text: 'Ser du lika dåligt som Martin?'},
-    {path: '/assets/images/404-sebbe.gif', text: 'Lika imponerande som Sebbe?'}
+    {path: '/assets/images/404-isak.jpg', text: 'Lika söt söm Isak?'},
+    {path: '/assets/images/404-stas.jpg', text: 'Lika Sibb-sugen som Staś?'},
+    {path: '/assets/images/404-lisch.jpg', text: 'Lika full som Lisch?'},
+    {path: '/assets/images/404-ebba.jpg', text: 'Lika rimlig som Ebba?'},
+    {path: '/assets/images/404-sagge.jpg', text: 'Lika smart som Sagge?'},
+    {path: '/assets/images/404-pdave.gif', text: 'Lika magisk som Pdave?'}
   ];
 
   const shuffled = _.shuffle(imagesWithText);
