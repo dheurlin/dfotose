@@ -19,13 +19,14 @@ const GalleryImagesView = observer(({imageList}) => {
     imageList.removeMarkedImages();
   };
 
+
   const images = _.map(imageList.images.toJS(), image => {
     const className = image.isMarked ? 'marked' : '';
-    // const userPromise = UserStore.fetchAllUsers();
+    const currAuthor = image.data.authorCid;
 
     return (
       <tr key={image.filename} className={className} onClick={onToggleImage(image).bind(this)}>
-        <td> <input type="checkbox" checked={image.isMarked} onClick={onToggleImage(image).bind(this)}/></td>
+        <td> <input type="checkbox" checked={image.isMarked} onChange={onToggleImage(image).bind(this)}/></td>
         <td> {image.author} </td>
         <td> {image.filename} </td>
         <td> <img key={ image.filename } src={ image.thumbnail } /> </td>
