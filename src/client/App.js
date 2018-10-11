@@ -46,6 +46,7 @@ const Admin = ({children}) => {
   );
 };
 
+
 const About = () => {
   return (
     <div className="wrapper">

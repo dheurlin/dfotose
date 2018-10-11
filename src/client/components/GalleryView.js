@@ -5,6 +5,8 @@ import {observer} from 'mobx-react';
 import moment from 'moment';
 import {animateScroll} from 'react-scroll';
 
+import uiState from '../UiState';
+
 import ImageList from './ImageList';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -12,6 +14,8 @@ import GalleryStore from '../GalleryStore';
 import ImageStore from '../ImageStore';
 import UiState from '../UiState';
 import PreloadContainerFactory from './PreloadContainerFactory';
+
+import LoginRequired from '../LoginRequired';
 
 @observer
 @withRouter
@@ -48,6 +52,10 @@ class GalleryView extends React.Component {
   }
 
   render() {
+    if (!uiState.user.isLoggedIn || uiState.user.role == 'None') {
+      return (<LoginRequired />);
+    }
+
     const {gallery, images} = this.props;
 
     if (gallery == undefined) {

@@ -5,10 +5,12 @@ import {observer} from 'mobx-react';
 import moment from 'moment';
 import keydown, {Keys} from 'react-keydown';
 import PropTypes from 'prop-types';
+import uiState from '../UiState';
 
 import PaginatedArray from '../PaginatedArray';
 import PreloadContainerFactory from './PreloadContainerFactory';
 import GalleryStore from '../GalleryStore';
+import LoginRequired from '../LoginRequired'
 
 @observer
 class Gallery extends React.Component {
@@ -99,6 +101,10 @@ class PaginatedGalleryList extends React.Component {
   }
 
   render() {
+    if (!uiState.user.isLoggedIn || uiState.user.role == 'None') {
+      return (<LoginRequired />);
+    }
+
     const galleries = this.props.paginatedGalleries.currentPageData;
     const currentPage = this.props.paginatedGalleries.currentPage;
     const maxPage = this.props.paginatedGalleries.maxPage;

@@ -8,9 +8,13 @@ import keydown, {Keys} from 'react-keydown';
 
 import LoadingSpinner from './LoadingSpinner';
 
+import uiState from '../UiState';
+
 import GalleryStore from '../GalleryStore';
 import ImageStore from '../ImageStore';
 import PreloadContainerFactory from './PreloadContainerFactory';
+
+import LoginRequired from '../LoginRequired';
 
 @observer
 class Image extends React.Component {
@@ -102,6 +106,10 @@ class ImageView extends React.Component {
   }
 
   render() {
+    if (!uiState.user.isLoggedIn || uiState.user.role == 'None') {
+      return (<LoginRequired />);
+    }
+
     const images = this.props.images;
     const imageId = this.state.imageId;
     const currentImageIndex = _.findIndex(images, image => image.id == imageId);

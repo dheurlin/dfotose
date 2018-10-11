@@ -5,6 +5,8 @@ import {observer} from 'mobx-react';
 import ImageList from './ImageList';
 import LoadingSpinner from './LoadingSpinner';
 
+import LoginRequired from '../LoginRequired'
+
 import uiState from '../UiState';
 
 @observer
@@ -41,6 +43,10 @@ class TagSearchView extends React.Component {
   }
 
   render() {
+    if (!uiState.user.isLoggedIn || uiState.user.role == 'None') {
+      return (<LoginRequired />);
+    }
+
     const {tag, showSpinner} = this.state;
     const images = this.state.imageList.images.toJS();
 
