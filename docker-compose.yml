@@ -3,7 +3,7 @@ services:
   dfotose:
     build: .
     ports:
-      - 4000:4000
+      - 4004:4000
     volumes:
       - ./storage:/dfotose/storage
       - ./uploaded-images:/dfotose/uploaded-images
