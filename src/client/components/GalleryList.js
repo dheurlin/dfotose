@@ -101,7 +101,7 @@ class PaginatedGalleryList extends React.Component {
   }
 
   render() {
-    if (!uiState.user.isLoggedIn || uiState.user.role == 'None') {
+    if (!uiState.user.isLoggedIn || uiState.user.data.role == 'None') {
       return (<LoginRequired />);
     }
 
