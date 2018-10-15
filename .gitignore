@@ -21,6 +21,7 @@
 .DS_Store
 
 /storage
+/data
 
 /*.lock
 /package-lock.json
