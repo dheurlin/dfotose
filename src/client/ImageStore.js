@@ -22,6 +22,10 @@ export class Image {
     return _.get(this.data, 'author', this.data.authorCid);
   }
 
+  @computed get authorCid() {
+    return this.data.authorCid;
+  }
+
   @computed get filename() {
     return this.data.filename;
   }

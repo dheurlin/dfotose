@@ -27,12 +27,13 @@ const GalleryImagesView = observer(({imageList, userList}) => {
   };
 
   const userMenu = (currImage) => {
-    const userOpts = _.map(userList, user => {
-      return (<option value={ user.data.cid } > { user.fullname } </option>)
+    const userOpts = _.map(_.zip(_.range(userList.length), userList), indexUser => {
+      const [index, user] = indexUser;
+      return (<option key={index} value={user.data.cid} > { user.fullname } </option>)
     });
 
     return (
-        <select name="users" value={currImage.data.authorCid} onChange={onUserChange(currImage).bind(this)}>
+        <select defaultValue={currImage.authorCid} onChange={onUserChange(currImage).bind(this)}>
             { userOpts }
         </select>
     )
@@ -41,7 +42,7 @@ const GalleryImagesView = observer(({imageList, userList}) => {
 
   const images = _.map(imageList.images.toJS(), image => {
     const className = image.isMarked ? 'marked' : '';
-    const currAuthor = image.data.authorCid;
+    const currAuthor = image.authorCid;
 
     return (
       <tr key={image.filename} className={className} >
