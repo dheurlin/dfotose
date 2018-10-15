@@ -12,7 +12,7 @@ import exifParser from 'exif-parser';
 import moment from 'moment';
 
 import {Restrictions} from '../model/user-roles';
-import {requireRestrictions} from './auth-api.js';
+import {requireRestrictions, hasRestrictions} from './auth-api.js';
 import Logger from '../logger';
 import config from '../config';
 import {abortOnError} from '../utils';
@@ -128,6 +128,17 @@ router.get('/image/:id/author', (req, res) => {
 router.post('/image/:id/author', jsonParser, (req, res) => {
     const imageId = req.params.id;
     const {newCid} = req.body;
+
+    const canWriteImage = hasRestrictions(
+        req,
+        Restrictions.WRITE_GALLERY | Restrictions.WRITE_IMAGES
+    );
+
+    if (!canWriteImage) {
+      res.status(403).end();
+      Logger.warn(`User ${req.session.user.cid} had insufficient permissions to change author`);
+      return;
+    }
 
     // First find the user so we can get the fullname
     User.findOne({cid: newCid}, (err, user) => {
