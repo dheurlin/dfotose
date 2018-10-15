@@ -22,6 +22,7 @@ const jsonParser = bodyParser.json();
 import Image from '../model/image';
 import ImageTag from '../model/image-tag';
 import Gallery from '../model/gallery';
+import User from '../model/user';
 
 const router = Router();
 export default router;
@@ -114,6 +115,37 @@ router.get('/image/:id/tags', (req, res) => {
 
     res.send(imageTags);
   });
+});
+
+router.get('/image/:id/author', (req, res) => {
+    const id = req.params.id;
+    Image.findById(id, (err, image) => {
+        abortOnError(err, res);
+        res.send(image.author);
+    });
+})
+
+router.post('/image/:id/author', jsonParser, (req, res) => {
+    const imageId = req.params.id;
+    const {newCid} = req.body;
+
+    // First find the user so we can get the fullname
+    User.findOne({cid: newCid}, (err, user) => {
+        abortOnError(err, res);
+
+        // Next, update the image
+        Image.findOneAndUpdate({_id: imageId}, {
+          $set: {
+            authorCid: newCid,
+            author: user.fullname
+          }
+        }, (err) => {
+          abortOnError(err, res);
+
+          console.log(`Changed author to ${user.fullname} for image ${imageId}`);
+          res.status(202).end();
+        })
+    });
 });
 
 router.post('/image/:id/tags', jsonParser, (req, res) => {

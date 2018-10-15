@@ -7,6 +7,7 @@ import GalleryImagesView from './GalleryImagesView';
 
 import GalleryStore from '../../GalleryStore';
 import ImageStore, {ImageGalleryList} from '../../ImageStore';
+import UserStore from '../../UserStore';
 import PreloadContainerFactory from '../PreloadContainerFactory';
 
 class EditGalleryView extends React.Component {
@@ -95,7 +96,7 @@ class EditGalleryView extends React.Component {
           }
         </form>
         <hr/>
-        <GalleryImagesView galleryId={ this.props.gallery.id } imageList={ this.props.imageList } />
+        <GalleryImagesView galleryId={ this.props.gallery.id } imageList={ this.props.imageList } userList={ this.props.users } />
       </div>
     );
   }
@@ -106,11 +107,13 @@ const EditGalleryViewContainer = PreloadContainerFactory((props) => {
 
   const galleryPromise = GalleryStore.fetchGallery(galleryId);
   const imagesPromise = ImageStore.fetchImagesInGallery(galleryId);
+  const userPromise = UserStore.fetchAllUsers();
 
-  return Promise.all([galleryPromise, imagesPromise]).then(([gallery, images]) => {
+  return Promise.all([galleryPromise, imagesPromise, userPromise]).then(([gallery, images, users]) => {
     return {
       gallery: gallery,
       galleryId: galleryId,
+      users: users,
       imageList: new ImageGalleryList(galleryId, images)
     };
   });

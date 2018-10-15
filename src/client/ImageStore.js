@@ -22,6 +22,10 @@ export class Image {
     return _.get(this.data, 'author', this.data.authorCid);
   }
 
+  @computed get authorCid() {
+    return this.data.authorCid;
+  }
+
   @computed get filename() {
     return this.data.filename;
   }
@@ -52,6 +56,18 @@ export class Image {
 
   @action unmark() {
     this.marked = false;
+  }
+
+
+  @action changeAuthor(newCid) {
+    const imageId = this.data._id;
+    return axios.post(`/v1/image/${imageId}/author`, {newCid: newCid}).then(() => {
+        // Fetch the newly written parameters
+        return axios.get(`/v1/image/${imageId}/author`).then(response => {
+            console.log("New author: " + response.data);
+            this.data.author = response.data;
+        });
+    });
   }
 
   @action addTag(tagName) {
@@ -86,6 +102,7 @@ export class ImageGalleryList {
         });
       }).bind(this));
   }
+
 
   @action addImages(formData, progressCallback) {
     const config = {
