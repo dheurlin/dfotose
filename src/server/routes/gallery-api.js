@@ -17,7 +17,7 @@ export default router;
 
 // Return all published galleries
 router.get('/gallery', (req, res) => {
-  Gallery.find({ published: true }).sort('-shootDate').exec((err, galleries) => {
+  Gallery.find({ published: true }).sort('-shootDate -created_at').exec((err, galleries) => {
     abortOnError(err, res);
     res.send(galleries);
   });
