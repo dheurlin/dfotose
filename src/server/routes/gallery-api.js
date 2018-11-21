@@ -98,15 +98,24 @@ router.get('/gallery/:id', (req, res) => {
 router.get('/gallery/:id/thumbnail-preview', (req, res) => {
   const id = req.params.id;
 
-  Image.findOne({galleryId: id}, (err, image) => {
-    abortOnError(err, res);
+  // Tries to get one image with the given query. If none is found, do the failFun
+  const sendOneOrFail = (query, failFun) => {
+    Image.findOne(query, (err, image) => {
+      abortOnError(err, res);
 
-    if (image !== null) {
-      res.sendFile(image.thumbnail);
-    } else {
-      res.status(200).end();
-    }
-  });
+      if (image !== null) {
+        res.sendFile(image.thumbnail)
+      } else {
+        failFun();
+      }
+    });
+  }
+
+  // Try to get a thumbnail image, else get any image, else return an error
+  sendOneOrFail({galleryId: id, isGalleryThumbnail: true},
+      () => sendOneOrFail({galleryId: id}, res.status(200).end)
+  );
+
 });
 
 // Create an entirely new gallery

@@ -14,6 +14,8 @@ const imageSchema = new Schema({
   preview: {type:String},
   fullSize: {type: String},
 
+  isGalleryThumbnail: {type: Boolean, default: false},
+
   tags: [String],
 
   shotAt: {type: Date, default: Date.now},
