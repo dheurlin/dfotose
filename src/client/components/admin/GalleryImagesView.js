@@ -26,6 +26,13 @@ const GalleryImagesView = observer(({imageList, userList}) => {
     };
   };
 
+  const onThumbChange = (image) => {
+    return (event) => {
+      image.setGalleryThumbnail();
+      imageList.images.forEach(image => image.updateData());
+    }
+  }
+
   const userMenu = (currImage) => {
     const userOpts = _.map(_.zip(_.range(userList.length), userList), indexUser => {
       const [index, user] = indexUser;
@@ -47,6 +54,7 @@ const GalleryImagesView = observer(({imageList, userList}) => {
     return (
       <tr key={image.filename} className={className} >
         <td> <input type="checkbox" checked={image.isMarked} onChange={onToggleImage(image).bind(this)}/></td>
+        <td> <input type="radio" name="is-thumbnail" checked={image.isGalleryThumbnail} onChange={onThumbChange(image).bind(this)}/></td>
         <td> {userMenu(image)} </td>
         <td> {image.filename} </td>
         <td> <img key={ image.filename } src={ image.thumbnail } /> </td>
@@ -66,6 +74,7 @@ const GalleryImagesView = observer(({imageList, userList}) => {
         <thead>
           <tr>
             <th>#</th>
+            <th>thumbnail</th>
             <th>fotograf</th>
             <th>filnamn</th>
             <th>bild</th>

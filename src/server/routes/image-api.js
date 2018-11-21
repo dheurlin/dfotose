@@ -68,6 +68,14 @@ router.get('/image/:galleryId', (req, res) => {
   });
 });
 
+router.get('/image/:id/details', (req,res) => {
+  const id = req.params.id;
+  Image.findById(id, (err, image) => {
+    abortOnError(err, res);
+    res.send(image);
+  });
+});
+
 // Return a specific image using an id
 router.get('/image/:id/fullSize', (req, res) => {
   const id = req.params.id;
@@ -123,6 +131,44 @@ router.get('/image/:id/author', (req, res) => {
         abortOnError(err, res);
         res.send(image.author);
     });
+})
+
+router.post('/image/:id/gallerythumbnail', (req,res) => {
+  const id = req.params.id;
+
+  const canWriteImage = hasRestrictions(
+      req,
+      Restrictions.WRITE_GALLERY | Restrictions.WRITE_IMAGES
+  );
+
+  if (!canWriteImage) {
+    res.status(403).end();
+    Logger.warn(`User ${req.session.user.cid} had insufficient permissions to change thumbnail.`);
+    return;
+  }
+
+  // Find the image that should be set as thumbnail
+  Image.findOne({_id: id}, (err, newThumb) => {
+    abortOnError(err, res);
+
+    // Remove the image that was previously thumbnail
+    Image.find({galleryId: newThumb.galleryId, isGalleryThumbnail: true}, (err, oldThumbs) => {
+      if (oldThumbs !== null && oldThumbs.length !== 0) {
+        oldThumbs.forEach(oldThumb => {
+          oldThumb.isGalleryThumbnail = false;
+          oldThumb.save();
+        });
+      }
+      else { console.log("No old thumbnail found"); }
+    });
+
+    // Set the new one as thumbnail
+    newThumb.isGalleryThumbnail = true;
+    newThumb.save();
+    console.log(`Changed gallery thumbnail to ${id} for gallery ${newThumb.galleryId}`);
+    res.status(202).end();
+
+  });
 })
 
 router.post('/image/:id/author', jsonParser, (req, res) => {
