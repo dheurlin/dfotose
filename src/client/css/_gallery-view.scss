@@ -7,8 +7,9 @@
     margin: 0 auto;
     p {
       font-style: italic;
+      white-space: pre-wrap;
     }
-    
+
     @media screen and (max-width: 1215px) {max-width: 910px;}
     @media screen and (max-width: 910px) {max-width: 605px;}
     @media screen and (max-width: 605px) {max-width: 300px;}
