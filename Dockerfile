@@ -2,12 +2,13 @@ FROM node:10
 
 WORKDIR /dfotose
 
-# Bundle app source
-COPY . .
-
 # Install all dependencies
+COPY package.json .
 RUN npm install
 RUN npm install -g gulp pm2
+
+# Bundle app source
+COPY . .
 
 # Build the app
 RUN gulp server:build
@@ -16,5 +17,3 @@ RUN gulp client:copy
 RUN gulp client:build
 
 RUN sh setup-kerberos.sh
-
-EXPOSE 4000
