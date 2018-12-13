@@ -19,7 +19,20 @@ import userRoleRouter from './routes/user-role-api';
 import config from './config';
 
 mongoose.promise = global.Promise;
-mongoose.connect(`mongodb://${config.database.host}:27017/${config.database.name}`, { useNewUrlParser: true });
+
+const connectWithRetry = () => {
+  console.log('MongoDB connection with retry')
+  mongoose.connect(`mongodb://${config.database.host}:27017/${config.database.name}`, { useNewUrlParser: true });
+}
+
+// Retry connection on failure
+mongoose.connection.on('error', err => {
+  console.log(`MongoDB connection error: ${err}`)
+  setTimeout(connectWithRetry, 5000)
+})
+
+connectWithRetry();
+
 
 const app = express();
 
