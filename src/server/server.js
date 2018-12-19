@@ -12,6 +12,7 @@ import Webpack from './webpack';
 
 // Routes
 import imageRouter from './routes/image-api';
+import videoRouter from './routes/video-api';
 import galleryRouter from './routes/gallery-api';
 import authRouter from './routes/auth-api';
 import userRoleRouter from './routes/user-role-api';
@@ -69,6 +70,7 @@ const baseUrl = '/v1';
 
 app.use(authRouter);
 app.use(baseUrl, imageRouter);
+app.use(baseUrl, videoRouter);
 app.use(baseUrl, galleryRouter);
 app.use(baseUrl, userRoleRouter);
 
