@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import moment from 'moment';
 
 import Video from '../model/video';
+import Gallery from '../model/gallery';
 import {requireRestrictions} from './auth-api';
 import {Restrictions} from '../model/user-roles';
 
@@ -43,4 +44,19 @@ router.post('/video/:galleryId',
 
   res.status(202).send();
 
+});
+
+
+// Return all videos for a specific gallery
+router.get('/video/:galleryId', (req, res) => {
+  const galleryId = req.params.galleryId;
+
+  Video.find({galleryId: galleryId}).sort('shotAt').exec((err, videos) => {
+    if (err) {
+      res.status(500).send(err);
+      throw err;
+    }
+
+    res.send(videos);
+  });
 });
