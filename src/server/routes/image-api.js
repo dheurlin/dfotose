@@ -324,6 +324,7 @@ function handleImages(req, res, galleryId) {
       const thumbnail = path.resolve(galleryPath, "thumbnails", `${filename}.${extension}`);
       sharp(fullSizeImagePath)
         .resize(300, 200)
+        .rotate() // rotates the image based on EXIF orientation data
         .crop(sharp.strategy.entropy)
         .toFile(thumbnail, (err) => {
           if (err) {
@@ -336,6 +337,7 @@ function handleImages(req, res, galleryId) {
       const preview = path.resolve(galleryPath, "previews", `${filename}.${extension}`);
       sharp(fullSizeImagePath)
         .resize(null, 800)
+        .rotate() // rotates the image based on EXIF orientation data
         .toFile(preview, (err) => {
           if (err) {
             Logger.error(`Could not save preview for image ${filename}`);
