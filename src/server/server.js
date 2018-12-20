@@ -69,10 +69,10 @@ app.use(sessionMiddleware);
 const baseUrl = '/v1';
 
 app.use(authRouter);
-app.use(baseUrl, imageRouter);
-app.use(baseUrl, videoRouter);
-app.use(baseUrl, galleryRouter);
-app.use(baseUrl, userRoleRouter);
+app.use(`${baseUrl}/image`, imageRouter);
+app.use(`${baseUrl}/video`, videoRouter);
+app.use(`${baseUrl}/gallery`, galleryRouter);
+app.use(`${baseUrl}/user`, userRoleRouter);
 
 app.listen(config.port, () => {
   console.log(`Listening :${config.port}`);

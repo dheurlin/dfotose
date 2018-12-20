@@ -18,7 +18,7 @@ export default router;
 const jsonParser = bodyParser.json();
 
 // Add video to gallery
-router.post('/video/:galleryId',
+router.post('/:galleryId',
   requireRestrictions(Restrictions.WRITE_IMAGES), jsonParser, (req, res) => {
 
   const galleryId = req.params.galleryId;
@@ -48,7 +48,7 @@ router.post('/video/:galleryId',
 
 
 // Return all videos for a specific gallery
-router.get('/video/:galleryId', (req, res) => {
+router.get('/:galleryId', (req, res) => {
   const galleryId = req.params.galleryId;
 
   Video.find({galleryId: galleryId}).sort('shotAt').exec((err, videos) => {

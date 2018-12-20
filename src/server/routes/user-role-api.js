@@ -15,7 +15,7 @@ const jsonParser = bodyParser.json();
 
 // Fetch all users that are eligible to be elevated
 // upon first login
-router.get('/user/eligible',
+router.get('/eligible',
   requireRestrictions(Restrictions.READ_USERS),
   (req, res) => {
     UserEligibleForRole.find({}, (err, eligibleUsers) => {
@@ -26,7 +26,7 @@ router.get('/user/eligible',
 
 // Sets a user to be elevated to a specific role
 // upon first login
-router.post('/user/eligible',
+router.post('/eligible',
   requireRestrictions(Restrictions.WRITE_USERS),
   jsonParser,
   (req, res) => {
@@ -52,7 +52,7 @@ router.post('/user/eligible',
 
 // Remove a user from getting elevated to a specific role
 // when logging in the first time.
-router.delete('/user/eligible/:cid',
+router.delete('/eligible/:cid',
   requireRestrictions(Restrictions.WRITE_USERS),
   (req, res) => {
     const cid = req.params.cid;

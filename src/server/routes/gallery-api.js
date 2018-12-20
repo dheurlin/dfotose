@@ -16,7 +16,7 @@ const router = Router();
 export default router;
 
 // Return all published galleries
-router.get('/gallery', (req, res) => {
+router.get('/', (req, res) => {
   Gallery.find({ published: true }).sort('-shootDate -created_at').exec((err, galleries) => {
     abortOnError(err, res);
     res.send(galleries);
@@ -24,7 +24,7 @@ router.get('/gallery', (req, res) => {
 });
 
 // Return all published galleries with a limit
-router.get('/gallery/limit/:limit', (req, res) => {
+router.get('/limit/:limit', (req, res) => {
   const limit = _.get(req.params, 'limit', 28);
   const nLimit = Number(limit);
 
@@ -35,7 +35,7 @@ router.get('/gallery/limit/:limit', (req, res) => {
 });
 
 // Return _all_ galleries, even unpublished
-router.get('/gallery/all',
+router.get('/all',
   // WRITE_IMAGES -> then you can add to unpublished galleries and read these
   requireRestrictions(Restrictions.WRITE_IMAGES),
   (req, res) => {
@@ -47,7 +47,7 @@ router.get('/gallery/all',
 
 // Return all galleries (only published) _after_ a certain date
 // this to enable pagination in the frontend.
-router.get('/gallery/after/:startDate/limit/:limit', (req, res) => {
+router.get('/after/:startDate/limit/:limit', (req, res) => {
   const {startDate, limit} = req.params;
   const nLimit = Number(limit);
 
@@ -62,7 +62,7 @@ router.get('/gallery/after/:startDate/limit/:limit', (req, res) => {
 
 // Return all galleries (only published) _before_ a certain date
 // this to enable pagination in the frontend.
-router.get('/gallery/before/:startDate/limit/:limit', (req, res) => {
+router.get('/before/:startDate/limit/:limit', (req, res) => {
   const {startDate, limit} = req.params;
   const nLimit = Number(limit);
 
@@ -76,7 +76,7 @@ router.get('/gallery/before/:startDate/limit/:limit', (req, res) => {
 });
 
 // Return the count of all galleries
-router.get('/gallery/count', (req, res) => {
+router.get('/count', (req, res) => {
   Gallery.count({ published: true }, (err, count) => {
     abortOnError(err, res);
     res.send({ count: count });
@@ -84,7 +84,7 @@ router.get('/gallery/count', (req, res) => {
 });
 
 // Return a specific gallery
-router.get('/gallery/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const id = req.params.id;
 
   Gallery.findById(id, (err, gallery) => {
@@ -95,7 +95,7 @@ router.get('/gallery/:id', (req, res) => {
 
 // Return the thumbnail preview for this particular
 // gallery
-router.get('/gallery/:id/thumbnail-preview', (req, res) => {
+router.get('/:id/thumbnail-preview', (req, res) => {
   const id = req.params.id;
 
   // Tries to get one image with the given query. If none is found, do the failFun
@@ -121,7 +121,7 @@ router.get('/gallery/:id/thumbnail-preview', (req, res) => {
 // Create an entirely new gallery
 //    - Possibly associate with an event or
 //      to restrict it to one gallery per event.
-router.post('/gallery',
+router.post('/',
   requireRestrictions(Restrictions.WRITE_GALLERY),
   jsonParser, (req, res) => {
   const galleryData = req.body;
@@ -140,7 +140,7 @@ router.post('/gallery',
 //  - Should not be able to modify authors
 //      as they should be set automatically and
 //      removed automatically.
-router.put('/gallery/:id',
+router.put('/:id',
   requireRestrictions(Restrictions.WRITE_GALLERY),
   jsonParser, (req, res) => {
   const galleryData = req.body;
@@ -160,7 +160,7 @@ router.put('/gallery/:id',
 });
 
 // Publish a gallery
-router.post('/gallery/:id/publish',
+router.post('/:id/publish',
   requireRestrictions(Restrictions.PUBLISH_GALLERY),
   (req, res) => {
   const id = req.params.id;
@@ -177,7 +177,7 @@ router.post('/gallery/:id/publish',
 });
 
 // Unpublish a gallery
-router.post('/gallery/:id/unpublish',
+router.post('/:id/unpublish',
   requireRestrictions(Restrictions.PUBLISH_GALLERY),
   (req, res) => {
   const id = req.params.id;
@@ -195,7 +195,7 @@ router.post('/gallery/:id/unpublish',
 
 // Remove an entire gallery
 //  should not be used ever imho.
-router.delete('/gallery/:id',
+router.delete('/:id',
   requireRestrictions(Restrictions.WRITE_GALLERY),
   (req, res) => {
   const id = req.params.id;

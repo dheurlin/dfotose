@@ -55,7 +55,7 @@ fs.mkdirs(config.storage.path, (err) => {
 });
 
 // Return all images for a specific gallery
-router.get('/image/:galleryId', (req, res) => {
+router.get('/:galleryId', (req, res) => {
   const galleryId = req.params.galleryId;
 
   Image.find({galleryId: galleryId}).sort('shotAt').exec((err, images) => {
@@ -68,7 +68,7 @@ router.get('/image/:galleryId', (req, res) => {
   });
 });
 
-router.get('/image/:id/details', (req,res) => {
+router.get('/:id/details', (req,res) => {
   const id = req.params.id;
   Image.findById(id, (err, image) => {
     abortOnError(err, res);
@@ -77,7 +77,7 @@ router.get('/image/:id/details', (req,res) => {
 });
 
 // Return a specific image using an id
-router.get('/image/:id/fullSize', (req, res) => {
+router.get('/:id/fullSize', (req, res) => {
   const id = req.params.id;
 
   Image.findById(id, (err, image) => {
@@ -90,7 +90,7 @@ router.get('/image/:id/fullSize', (req, res) => {
   });
 });
 
-router.get('/image/:id/thumbnail', (req, res) => {
+router.get('/:id/thumbnail', (req, res) => {
   const id = req.params.id;
 
   Image.findById(id, (err, image) => {
@@ -103,7 +103,7 @@ router.get('/image/:id/thumbnail', (req, res) => {
   });
 });
 
-router.get('/image/:id/preview', (req, res) => {
+router.get('/:id/preview', (req, res) => {
   const id = req.params.id;
 
   Image.findById(id, (err, image) => {
@@ -116,7 +116,7 @@ router.get('/image/:id/preview', (req, res) => {
   });
 });
 
-router.get('/image/:id/tags', (req, res) => {
+router.get('/:id/tags', (req, res) => {
   const id = req.params.id;
   ImageTag.find({ imageId: id }, (err, imageTags) => {
     abortOnError(err, res);
@@ -125,7 +125,7 @@ router.get('/image/:id/tags', (req, res) => {
   });
 });
 
-router.get('/image/:id/author', (req, res) => {
+router.get('/:id/author', (req, res) => {
     const id = req.params.id;
     Image.findById(id, (err, image) => {
         abortOnError(err, res);
@@ -133,7 +133,7 @@ router.get('/image/:id/author', (req, res) => {
     });
 })
 
-router.post('/image/:id/gallerythumbnail', (req,res) => {
+router.post('/:id/gallerythumbnail', (req,res) => {
   const id = req.params.id;
 
   const canWriteImage = hasRestrictions(
@@ -171,7 +171,7 @@ router.post('/image/:id/gallerythumbnail', (req,res) => {
   });
 })
 
-router.post('/image/:id/author', jsonParser, (req, res) => {
+router.post('/:id/author', jsonParser, (req, res) => {
     const imageId = req.params.id;
     const {newCid} = req.body;
 
@@ -205,7 +205,7 @@ router.post('/image/:id/author', jsonParser, (req, res) => {
     });
 });
 
-router.post('/image/:id/tags', jsonParser, (req, res) => {
+router.post('/:id/tags', jsonParser, (req, res) => {
   const imageId = req.params.id;
 
   const {tagName} = req.body;
@@ -241,7 +241,7 @@ router.post('/image/:id/tags', jsonParser, (req, res) => {
   });
 });
 
-router.get('/image/tags/:tagName/search', (req, res) => {
+router.get('/tags/:tagName/search', (req, res) => {
   const tagName = req.params.tagName.toLowerCase();
 
   ImageTag.find({ tagName: tagName }, (err, imageTags) => {
@@ -385,7 +385,7 @@ function handleImages(req, res, galleryId) {
 // Upload images
 //  - The images will not be attached to any
 //    gallery when uploaded
-router.post('/image',
+router.post('/',
   requireRestrictions(Restrictions.WRITE_IMAGES | Restrictions.WRITE_GALLERY)
   , upload.array('photos'), (req, res) => {
   handleImages(req, res, 'undefined');
@@ -396,7 +396,7 @@ router.post('/image',
 //  - Author is always the logged-in User
 //  - The images will be added to the gallery
 //    automatically.
-router.post('/image/:galleryId',
+router.post('/:galleryId',
   requireRestrictions(Restrictions.WRITE_IMAGES)
   , upload.array('photos'), (req, res) => {
   const galleryId = req.params.galleryId;
@@ -437,7 +437,7 @@ export function updateAuthorOfImagesUploadedByCid(cid, author) {
 // Delete a specific image
 //  - Note: this automatically removes all gallery
 //          associations.
-router.delete('/image/:id',
+router.delete('/:id',
   requireRestrictions(Restrictions.WRITE_IMAGES | Restrictions.WRITE_GALLERY),
   (req, res) => {
   const id = req.params.id;
