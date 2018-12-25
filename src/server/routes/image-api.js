@@ -25,7 +25,6 @@ import Gallery from '../model/gallery';
 import galleryEntryRouter from './gallery-entry-api.js'
 
 const router = galleryEntryRouter(Image);
-
 export default router;
 
 const imageStorage = multer.diskStorage({

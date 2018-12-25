@@ -11,8 +11,9 @@ import {Restrictions} from '../model/user-roles';
 import Logger from '../logger';
 import {abortOnError} from '../utils';
 
+import galleryEntryRouter from './gallery-entry-api.js'
 
-const router = Router();
+const router = galleryEntryRouter(Video);
 export default router;
 
 const jsonParser = bodyParser.json();
@@ -44,19 +45,4 @@ router.post('/:galleryId',
 
   res.status(202).send();
 
-});
-
-
-// Return all videos for a specific gallery
-router.get('/:galleryId', (req, res) => {
-  const galleryId = req.params.galleryId;
-
-  Video.find({galleryId: galleryId}).sort('shotAt').exec((err, videos) => {
-    if (err) {
-      res.status(500).send(err);
-      throw err;
-    }
-
-    res.send(videos);
-  });
 });

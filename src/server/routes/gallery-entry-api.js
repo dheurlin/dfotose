@@ -202,7 +202,7 @@ const galleryEntryRouter = className => {
         throw err;
       }
 
-      Logger.info(`User ${req.session.user.cid} removed image ${id}`);
+      Logger.info(`User ${req.session.user.cid} removed entry ${id}`);
 
       res.status(202).send();
     });
