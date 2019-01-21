@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import {Router} from 'express';
 import bodyParser from 'body-parser';
+import {inHTMLData} from 'xss-filters';
+import mongoose from 'mongoose';
 import moment from 'moment';
 
 import Gallery from '../model/gallery';
@@ -22,6 +24,7 @@ const galleryEntryRouter = className => {
 
   // Return all entries for a specific gallery
   router.get('/:galleryId', (req, res) => {
+    console.log('dags för kebab!');
     const galleryId = req.params.galleryId;
 
     className.find({galleryId: galleryId}).sort('shotAt').exec((err, entries) => {
@@ -143,7 +146,7 @@ const galleryEntryRouter = className => {
       tagName: filteredTagName
     };
 
-    var newTag = new classNameTag(imageTagData);
+    var newTag = new ImageTag(imageTagData);
     newTag.save((err) => {
       abortOnError(err, res);
 

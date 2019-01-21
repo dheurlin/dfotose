@@ -2,33 +2,11 @@ import _ from 'lodash';
 import axios from 'axios';
 import {computed,action,observable} from 'mobx';
 
-export class Image {
-  @observable data;
-  @observable marked = false;
+import {GalleryEntry, EntryGalleryList, EntriesForTagList, GalleryEntryStore} from './GalleryEntryStore';
 
-  constructor(data) {
-    this.data = data;
-  }
+export class Image extends GalleryEntry {
 
-  @computed get id() {
-    return this.data._id;
-  }
-
-  @computed get galleryId() {
-    return this.data.galleryId;
-  }
-
-  @computed get author() {
-    return _.get(this.data, 'author', this.data.authorCid);
-  }
-
-  @computed get authorCid() {
-    return this.data.authorCid;
-  }
-
-  @computed get isGalleryThumbnail() {
-    return _.get(this.data, 'isGalleryThumbnail', false);
-  }
+  static get apiPrefix() { return 'image'; }
 
   @computed get filename() {
     return this.data.filename;
@@ -46,82 +24,13 @@ export class Image {
     return `/v1/image/${this.data._id}/preview`;
   }
 
-  @computed get tags() {
-    return this.data.tags.toJS();
-  }
-
-  @computed get isMarked() {
-    return this.marked;
-  }
-
-  @action mark() {
-    this.marked = true;
-  }
-
-  @action unmark() {
-    this.marked = false;
-  }
-
-  // Updates the whole .data of this image
-  @action updateData() {
-    const imageId = this.data._id;
-    return axios.get(`/v1/image/${imageId}/details`).then(response => {
-      this.data = response.data;
-    })
-  }
-
-
-  @action changeAuthor(newCid) {
-    const imageId = this.data._id;
-    return axios.post(`/v1/image/${imageId}/author`, {newCid: newCid}).then(() => {
-        // Fetch the newly written parameters
-        return axios.get(`/v1/image/${imageId}/author`).then(response => {
-            console.log("New author: " + response.data);
-            this.data.author = response.data;
-        });
-    });
-  }
-
-  @action setGalleryThumbnail() {
-    const imageId = this.data._id;
-    return axios.post(`/v1/image/${imageId}/gallerythumbnail`, {}).then((() => {
-      this.data.isGalleryThumbnail = true;
-    }).bind(this));
-  }
-
-  @action addTag(tagName) {
-    const imageId = this.data._id;
-
-    const imageTag = {
-      imageId: imageId,
-      tagName: tagName
-    };
-
-    return axios.post(`/v1/image/${imageId}/tags`, imageTag)
-      .then((() => {
-        this.data.tags.push(tagName);
-      }).bind(this));
-  }
 }
 
-export class ImageGalleryList {
-  @observable images = [];
-  @observable galleryId = null;
+export class ImageGalleryList extends EntryGalleryList {
 
-  constructor(galleryId, images) {
-    this.galleryId = galleryId;
-    this.images = images;
-  }
+  @computed get images() { return this.entries; }
 
-  fetchImages() {
-    return axios.get(`/v1/image/${this.galleryId}`)
-      .then((response => {
-        this.images = _.map(response.data, data => {
-          return new Image(data);
-        });
-      }).bind(this));
-  }
-
+  static get EntryClass() { return Image; }
 
   @action addImages(formData, progressCallback) {
     const config = {
@@ -138,58 +47,32 @@ export class ImageGalleryList {
       }).bind(this));
   }
 
+  fetchImages() { return this.fetchEntries(); }
+
   @action removeMarkedImages() {
-    const markedImages = _.filter(this.images, {isMarked: true});
-
-    const removePromises = _.map(markedImages, image => {
-      return axios.delete(`/v1/image/${image.id}`);
-    });
-
-    Promise.all(removePromises)
-      .then(() => {
-        this.images = _.filter(this.images, {isMarked: false});
-      })
-      .catch(err => {
-        console.log(err);
-        alert('Could not remove images! ' + err);
-      });
+    return this.removeMarkedEntries();
   }
+
 }
 
-export class ImagesForTagList {
-  @observable images = [];
-  @observable tag = null;
+export class ImagesForTagList extends EntriesForTagList {
 
-  constructor(tag) {
-    this.tag = tag;
-    this.fetchImages();
-  }
+  @computed get images() { return this.entries; }
 
-  fetchImages() {
-    axios.get(`/v1/image/tags/${this.tag}/search`)
-      .then((response => {
-        this.images = _.map(response.data, data => {
-          return new Image(data);
-        });
-      }).bind(this));
-  }
+  static get EntryClass() { return Image; }
+
+  fetchImages() { return this.fetchEntries; }
+
 }
 
-export class ImageStore {
-  @action getImagesForTag(tag) {
-    return new ImagesForTagList(tag);
-  }
+export class ImageStore extends GalleryEntryStore {
 
-  static fetchImagesInGallery(galleryId) {
-    return axios.get(`/v1/image/${galleryId}`)
-      .then((response => {
-        const images = _.map(response.data, data => {
-          return new Image(data);
-        });
+  static get TagListClass() { return ImagesForTagList; }
 
-        return Promise.resolve(images);
-      }).bind(this));
-  }
+  getImagesForTag(tag) { return this.getEntriesForTag(tag); }
+
+  static fetchImagesInGallery(galleryId) { return this.fetchEntriesInGallery(galleryId); }
+
 }
 
 export default ImageStore;
