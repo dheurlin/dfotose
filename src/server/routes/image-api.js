@@ -311,6 +311,7 @@ function handleImages(req, res, galleryId) {
     const filename = uuid.v4();
     const galleryPath = path.resolve(config.storage.path, galleryId);
     const fullSizeImagePath = `${galleryPath}/${filename}.${extension}`;
+    const isGif = extension === "gif";
 
     createDirectoryIfNeeded(galleryPath);
     createDirectoryIfNeeded(path.resolve(galleryPath, "thumbnails"));
@@ -334,17 +335,21 @@ function handleImages(req, res, galleryId) {
           }
         });
 
-      const preview = path.resolve(galleryPath, "previews", `${filename}.${extension}`);
-      sharp(fullSizeImagePath)
-        .resize(null, 800)
-        .rotate() // rotates the image based on EXIF orientation data
-        .toFile(preview, (err) => {
-          if (err) {
-            Logger.error(`Could not save preview for image ${filename}`);
-          } else {
-            Logger.info(`Saved preview ${preview}`);
-          }
-        });
+
+      // If it's a gif, use the fullsize as preview to preserve animation
+      const preview = isGif ? fullSizeImagePath : path.resolve(galleryPath, "previews", `${filename}.${extension}`);
+      if (!isGif) {
+        sharp(fullSizeImagePath)
+          .resize(null, 800)
+          .rotate() // rotates the image based on EXIF orientation data
+          .toFile(preview, (err) => {
+            if (err) {
+              Logger.error(`Could not save preview for image ${filename}`);
+            } else {
+              Logger.info(`Saved preview ${preview}`);
+            }
+          });
+      }
 
       readExifData(fullSizeImagePath, (exif) => {
         const shotAtUnformatted = _.get(exif, 'tags.DateTimeOriginal');
