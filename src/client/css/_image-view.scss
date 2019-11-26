@@ -6,7 +6,7 @@
   justify-content: center;
 
   .image-with-buttons {
-    max-width: 800px;
+    max-width: 1200px;
 
     .image-loading-spinner {
       position: absolute;
@@ -38,7 +38,7 @@
 
     .primary-image {
       max-width: 100%;
-      border-radius: 15px;
+      //border-radius: 15px;
     }
   }
 
@@ -52,7 +52,7 @@
 
     background: #eee;
     padding: 10px;
-    border-radius: 10px;
+    //border-radius: 10px;
 
     margin-left: 20px;
     margin-bottom: 20px;
