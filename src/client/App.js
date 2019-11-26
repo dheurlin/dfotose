@@ -54,7 +54,8 @@ const About = () => {
         <h2>Om sidan</h2>
         <p>Frukostklubben är Chalmers bästa phaddergrupp. Därför är det självklart att vi skall ha en sida där vi delar foton från alla våra storslagna arr och sittningar!</p>
         <p>Sidan bygger på <a href="https://dfoto.se">dfoto.se</a> -- ursprungligen skapad av dFoto -- och forkades av <a href="https://github.com/dheurlin">BS</a> som gjorde lite småändringar. Källkoden finns att hitta på <a href="https://github.com/dheurlin/frukostfoto">GitHub</a> för den som är intresserad.</p>
-        <h3>Vi ses genom kameralinsen!</h3>
+        <p>Frukostfoto används numera av Staś för testning av ändringar, innan de läggs till på dfoto.se.</p>
+        <h3>Ses i dimman!</h3>
       </div>
     </div>
   );
